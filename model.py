@@ -33,7 +33,7 @@ def load_dataset(data_path, img_size=(224, 224)):
     return images, labels, label_map
 
 # Load data
-data_path = 'path/to/IMFDB'
+data_path = '/project/workspace/dataset'
 X, y, label_map = load_dataset(data_path)
 
 # Split into training and validation sets
@@ -59,8 +59,7 @@ history = model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=10,
 # Save as TFLite model
 model.save('efficientnetb0_face_recognition.h5')
 
-# Convert to TFLite
-converter = tf.lite.TFLiteConverter.from_saved_model('efficientnetb0_face_recognition.h5')
+converter = tf.lite.TFLiteConverter.from_keras_model(models.load_model('efficientnetb0_face_recognition.h5'))
 tflite_model = converter.convert()
 with open('efficientnetb0_face_recognition.tflite', 'wb') as f:
     f.write(tflite_model)
